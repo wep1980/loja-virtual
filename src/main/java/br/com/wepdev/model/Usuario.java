@@ -74,6 +74,15 @@ public class Usuario implements UserDetails {
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
+
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 	
 
 	/*Autoridades = São os acesso, ou seja ROLE_ADMIN, ROLE_SECRETARIO, ROLE_FINACEIRO*/
