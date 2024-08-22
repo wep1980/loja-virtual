@@ -1,5 +1,6 @@
 package br.com.wepdev.security;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.wepdev.ApplicationContextLoad;
 import br.com.wepdev.model.Usuario;
 import br.com.wepdev.repository.UsuarioRepository;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -58,9 +61,12 @@ public class JWTTokenAutenticacaoService {
 
 
     /*Retorna o usuário validado com token ou caso nao seja valido retona null*/
-    public Authentication getAuthetication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication getAuthetication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String token = request.getHeader(HEADER_STRING);
+
+        try {
+
         if (token != null) {
 
             String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim(); // retirando do token o Bearer
@@ -83,7 +89,15 @@ public class JWTTokenAutenticacaoService {
                 }
             }
         }
-        liberacaoCors(response);
+        }catch (SignatureException e) {
+            response.getWriter().write("Token está inválido.");
+
+        }catch (ExpiredJwtException e) {
+            response.getWriter().write("Token está expirado, efetue o login novamente.");
+        }
+        finally {
+            liberacaoCors(response);
+        }
         return null;
     }
 
