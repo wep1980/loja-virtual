@@ -3,6 +3,7 @@ package br.com.wepdev;
 import java.util.List;
 
 import br.com.wepdev.controller.AcessoController;
+import br.com.wepdev.exception.ExceptionMentoriaJava;
 import br.com.wepdev.model.Acesso;
 import br.com.wepdev.repository.AcessoRepository;
 import org.junit.jupiter.api.Test;
@@ -224,7 +225,7 @@ public class LojaVirtualMentoriaApplicationTests extends TestCase {
 	
 	//  *************** TESTES DE END POINT ***************
 	@Test
-	public void testCadastraAcesso() {
+	public void testCadastraAcesso() throws ExceptionMentoriaJava {
 		
 		Acesso acesso = new Acesso();
 		

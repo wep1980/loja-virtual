@@ -20,6 +20,22 @@ import java.util.List;
 @ControllerAdvice
 public class ControleExcecoes extends ResponseEntityExceptionHandler {
 
+    /**
+     * Metodo que captura a exception ExceptionMentoriaJava que e iniciada no controllerAcesso
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(ExceptionMentoriaJava.class)
+    public ResponseEntity<Object> handleExceptionCustom (ExceptionMentoriaJava ex) {
+
+        ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
+
+        objetoErroDTO.setError(ex.getMessage());
+        objetoErroDTO.setCode(HttpStatus.OK.toString());
+
+        return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.OK);
+    }
+
     /*Captura execeçoes do projeto*/
     @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class}) // Lista de exceções capturadas
     @Override

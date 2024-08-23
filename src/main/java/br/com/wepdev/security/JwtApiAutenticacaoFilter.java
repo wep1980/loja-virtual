@@ -21,6 +21,8 @@ public class JwtApiAutenticacaoFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
+        try {
+
         /*Chamando o servico criado por mnim que estabece a autenticao do user*/
 
         Authentication authentication = new JWTTokenAutenticacaoService().
@@ -31,6 +33,13 @@ public class JwtApiAutenticacaoFilter extends GenericFilterBean {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         chain.doFilter(request, response);
+
+        }catch (Exception e){
+           e.printStackTrace(); // mensagem mostrada no console
+
+            //mensagem para o cliente(postman)
+           response.getWriter().write("Ocorreu um erro no sistema, avise ao administrador : \n" + e.getMessage());
+        }
 
     }
 }
